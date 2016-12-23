@@ -1,54 +1,58 @@
 import React, { Component } from 'react';
+import logo from './logo.svg';
 import './App.css';
 
 class App extends Component {
-constructor(props) {
-  super(props);
-    this.setState = {
+  constructor(props) {
+    super(props);
+    this.state = {
       value: "",
-      todo: []
-    
+      todos: []
+    }
+    this.handleAdd = this.handleAdd.bind(this);
+    this.handleRemove = this.handleRemove.bind(this);
   }
-  this.handleAdd = this.handleAdd.bind(this);
-  this.handleRemove =
-}
 
-handleAdd(e) {
-  if (e.keyCode == 13) return;
-  this.setState({
-    value: "",
-    todos: [
-      this.state.todos,
-      {
-        id: Date.now(),
-        text: this.state.value
-        
-      }
-    ]
-  })
+  handleAdd(e) {
+    if (e.keyCode !== 13) return;
+    this.setState({
+      value: "",
+      todos: [
+        ...this.state.todos,
+        {
+          id: Date.now(),
+          text: this.state.value
+        }
+      ]
+    })
+  }
 
-}
-
-handleRemove(index) {
-  const todos = [ this.state.todos];
-  
-}
+  handleRemove(index) {
+    this.state.todos.splice(index,1)
+    const todos = [...this.state.todos];
+    this.setState({
+      todos,
+    })
+  }
 
   render() {
     return (
       <div>
-        <input value={this.state.value}
-        onChange={(e) => this.setState({value: e.target.value})}
-        onKeyUp={this.handleAdd}
+        <input 
+          value={this.state.value}
+          onChange={(e) => this.setState({ value: e.target.value })}
+          onKeyUp={this.handleAdd}
         />
-
+ 
         {
           this.state.todos.map((todo, index) => {
             return <div key={todo.id}>
-              {todo.text}</div>
+                  {todo.text}
+                <button onClick={() => this.handleRemove(index)}>Remove</button>
+            </div>
           })
-        }
-          
+        }        
+        
       </div>
     );
   }
